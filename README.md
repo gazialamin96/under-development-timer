@@ -1,6 +1,8 @@
 # under-development-timer
 Responsive Under-Development Landing Page for Your Website Includes futuristic design, animated gradient background, auto color pulse, countdown timer, and email notification form. Built with HTML, CSS, and JavaScript.
 
+# Screenshot of developed Page: 
+<img width="941" height="458" alt="Gazi Al- Amin Website Timer" src="https://github.com/user-attachments/assets/e489d0f6-53ef-4e92-99fb-0dd35d9bdd16" />
 
 # Gazi Al- Amin's website — Under Development Page
 
