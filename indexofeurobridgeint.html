@@ -1,0 +1,626 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gazi Al- Amin's Developed Timmer for Website</title>
+  <meta name="description" content="Gazi Al- Amin's Developed Timmer for Website — Our new website is under development. Stay tuned." />
+  <meta name="robots" content="noindex, nofollow" />
+
+  <!-- Open Graph / Social -->
+  <meta property="og:title" content="Gazi Al- Amin's Developed Timmer for Website" />
+  <meta property="og:description" content="We’re crafting a new experience. Stay tuned." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://github.com/gazialamin96" />
+  <meta property="og:image" content="https://avatars.githubusercontent.com/u/37772368?s=400&u=b347d9292640fe13b3737a8973ae27fb881b80e0&v=4" />
+
+  <style>
+    :root{
+      --bg-1: #0b0f1a;         /* deep space */
+      --bg-2: #111827;         /* slate */
+      --card-bg: rgba(17, 24, 39, 0.55);
+      --text: #e5e7eb;         /* light gray */
+      --muted: #9ca3af;
+      --accent: #6ee7ff;       /* initial accent (JS updates) */
+      --accent-soft: rgba(110,231,255,0.25);
+      --radius: 18px;
+      --shadow: 0 10px 40px rgba(0,0,0,0.35);
+      --maxw: 980px;
+      --ok: #34d399;
+      --warn: #f59e0b;
+      --err: #ef4444;
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: radial-gradient(1200px 1200px at 85% 10%, #182233 0%, #0b0f1a 45%, #090d16 100%),
+                  linear-gradient(135deg, #0b0f1a 0%, #111827 100%);
+      color: var(--text);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Helvetica Neue", "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol", sans-serif;
+    }
+
+    .gradient-veil {
+      position: fixed;
+      inset: 0;
+      background: conic-gradient(from 180deg at 50% 50%, rgba(110,231,255,0.12), rgba(168,85,247,0.12), rgba(56,189,248,0.12), rgba(110,231,255,0.12));
+      filter: blur(60px) saturate(140%);
+      mix-blend-mode: screen;
+      animation: swirl 18s linear infinite;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+    @keyframes swirl {
+      0% { transform: rotate(0deg) scale(1.05); }
+      50% { transform: rotate(180deg) scale(1.1); }
+      100% { transform: rotate(360deg) scale(1.05); }
+    }
+
+    canvas#particles {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      opacity: 0.35;
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+      min-height: 100%;
+      display: grid;
+      place-items: center;
+      padding: clamp(16px, 4vw, 48px);
+    }
+
+    .card {
+      width: 100%;
+      max-width: var(--maxw);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.0)) , var(--card-bg);
+      border: 1px solid rgba(110,231,255,0.22);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow), 0 0 0 1px rgba(110,231,255,0.12) inset, 0 0 60px rgba(110,231,255,0.06);
+      backdrop-filter: blur(12px);
+      padding: clamp(20px, 4vw, 40px);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--text);
+      background: linear-gradient(90deg, rgba(110,231,255,0.12), rgba(168,85,247,0.12));
+      border: 1px solid var(--accent-soft);
+      padding: 8px 12px;
+      border-radius: 999px;
+      box-shadow: 0 0 20px var(--accent-soft);
+    }
+
+    .title {
+      margin: 16px 0 8px;
+      font-weight: 800;
+      line-height: 1.05;
+      font-size: clamp(28px, 5vw, 48px);
+      color: #f8fafc;
+      text-shadow:
+        0 0 12px rgba(110,231,255,0.45),
+        0 0 28px rgba(110,231,255,0.25);
+    }
+
+    .glow .accent {
+      color: var(--accent);
+      text-shadow:
+        0 0 8px rgba(110,231,255,0.65),
+        0 0 24px rgba(110,231,255,0.35),
+        0 0 48px rgba(110,231,255,0.25);
+    }
+
+    .subtitle {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: clamp(14px, 2.2vw, 18px);
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: rgba(16,185,129,0.08);
+      border: 1px solid rgba(16,185,129,0.25);
+      color: #a7f3d0;
+      font-weight: 600;
+      margin: 8px 0 22px;
+    }
+    .status .dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: #34d399;
+      box-shadow: 0 0 12px #34d399, 0 0 24px rgba(52,211,153,0.5);
+      animation: pulse 1.6s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%,100% { transform: scale(1); opacity: 1;}
+      50% { transform: scale(0.7); opacity: .6;}
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 16px 0 6px;
+    }
+
+    .btn, .link {
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 10px;
+      padding: 12px 18px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--text);
+      background: rgba(255,255,255,0.02);
+      text-decoration: none;
+      transition: transform .18s ease, background .18s ease, border-color .18s ease;
+    }
+    .btn:hover, .link:hover {
+      transform: translateY(-1px);
+      background: rgba(255,255,255,0.04);
+      border-color: var(--accent-soft);
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, rgba(110,231,255,0.16), rgba(168,85,247,0.16));
+      border: 1px solid var(--accent-soft);
+      box-shadow: 0 10px 24px rgba(110,231,255,0.12), inset 0 0 24px rgba(110,231,255,0.12);
+    }
+    .btn-primary:hover { background: linear-gradient(135deg, rgba(110,231,255,0.24), rgba(168,85,247,0.22)); }
+
+    .controls {
+      margin-top: 24px;
+      display: grid;
+      grid-template-columns: minmax(180px, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+    }
+    .control-tile {
+      display: flex; align-items: center; gap: 12px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 12px;
+      padding: 10px 12px;
+    }
+    .control-tile label { font-size: 14px; color: var(--muted); }
+    input[type="color"] {
+      appearance: none;
+      border: none;
+      width: 36px; height: 28px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: transparent;
+      cursor: pointer;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.16);
+    }
+    .toggle { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; }
+    .toggle input {
+      appearance: none; width: 42px; height: 24px; border-radius: 999px;
+      background: rgba(255,255,255,0.12);
+      position: relative; outline: none; transition: background .2s ease;
+    }
+    .toggle input::after {
+      content: ""; position: absolute; top: 3px; left: 3px;
+      width: 18px; height: 18px; border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 10px var(--accent-soft);
+      transition: transform .2s ease;
+    }
+    .toggle input:checked { background: rgba(110,231,255,0.25); }
+    .toggle input:checked::after { transform: translateX(18px); }
+
+    /* Countdown */
+    .countdown {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(68px, 1fr));
+      gap: 10px;
+      margin: 18px 0 8px;
+    }
+    .time-box {
+      text-align: center;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 12px;
+      padding: 10px;
+    }
+    .time-box .num {
+      font-size: clamp(20px, 4.6vw, 34px);
+      font-weight: 800;
+      color: #f8fafc;
+      text-shadow: 0 0 16px rgba(110,231,255,0.25);
+    }
+    .time-box .label { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
+
+    /* Notify form */
+    .notify-wrap {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+    }
+    .notify-wrap input[type="email"] {
+      width: 100%;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 12px 14px;
+      outline: none;
+      transition: border-color .2s ease, box-shadow .2s ease;
+    }
+    .notify-wrap input[type="email"]::placeholder { color: #94a3b8; }
+    .notify-wrap input[type="email"]:focus {
+      border-color: var(--accent-soft);
+      box-shadow: 0 0 0 4px rgba(110,231,255,0.12);
+    }
+
+    .note {
+      margin-top: 8px; font-size: 12px; color: var(--muted);
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      right: 16px; bottom: 16px;
+      background: rgba(17,24,39,0.92);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-left: 4px solid var(--ok);
+      color: #e5e7eb;
+      padding: 12px 14px;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      display: none;
+      z-index: 50;
+      max-width: min(92vw, 420px);
+    }
+    .toast.error { border-left-color: var(--err); }
+    .toast.warn  { border-left-color: var(--warn); }
+    .toast .title { font-size: 14px; margin: 0; }
+    .toast .msg { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+    footer {
+      margin-top: 24px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .site-link {
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px dashed rgba(110,231,255,0.35);
+    }
+    .site-link:hover { filter: brightness(1.15); }
+
+    @media (max-width: 640px){
+      .controls { grid-template-columns: 1fr; }
+      .countdown { grid-template-columns: repeat(2, minmax(80px,1fr)); }
+      .notify-wrap { grid-template-columns: 1fr; }
+      .title { font-size: clamp(26px, 8vw, 40px); }
+    }
+  </style>
+</head>
+<body>
+  <div class="gradient-veil" aria-hidden="true"></div>
+  <canvas id="particles" aria-hidden="true"></canvas>
+
+  <main>
+    <section class="card" role="region" aria-label="Welcome and status"
+             id="launchCard"
+             data-launch=""> <!-- Optional: set like 2026-03-01T10:00:00+06:00 -->
+      <div class="badge" aria-label="Status badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 3l2.09 6.26H21l-5.17 3.76L17.91 21 12 16.98 6.09 21l2.08-7.98L3 9.26h6.91L12 3z"
+                stroke="var(--accent)" stroke-width="1.2"/>
+        </svg>
+        Gazi Al- Amin Website Timer
+      </div>
+
+      <h1 class="title glow" aria-live="polite">
+        Hi there — <span class="accent">Welcome!</span>
+      </h1>
+
+      <p class="subtitle">
+        We’re crafting a new digital experience for <strong>Gazi Al- Amin Website</strong>.
+      </p>
+
+      <div class="status" role="status" aria-live="polite">
+        <span class="dot" aria-hidden="true"></span>
+        Under development — launching soon
+      </div>
+
+      <!-- Countdown -->
+      <div class="countdown" aria-label="Countdown to launch">
+        <div class="time-box">
+          <div class="num" id="days">00</div>
+          <div class="label">Days</div>
+        </div>
+        <div class="time-box">
+          <div class="num" id="hours">00</div>
+          <div class="label">Hours</div>
+        </div>
+        <div class="time-box">
+          <div class="num" id="mins">00</div>
+          <div class="label">Minutes</div>
+        </div>
+        <div class="time-box">
+          <div class="num" id="secs">00</div>
+          <div class="label">Seconds</div>
+        </div>
+      </div>
+
+      <div class="cta-row">
+        <a href="https://github.com/gazialamin96" target="_blank" rel="noopener noreferrer" style="color:whitesmoke">
+          Visit Current Site
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M14 3h7v7M21 3 10 14M21 10v11H3V3h11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </a>
+        <a href="mailto:gazialamin96@gmail.com" target="_blank" rel="noopener noreferrer" style="color:whitesmoke">
+          Contact Us
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M4 6h16v12H4zM4 6l8 7 8-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </a>
+      </div>
+
+      <!-- Notify-me form -->
+      <form class="notify-wrap" id="notifyForm" autocomplete="on" novalidate>
+        <label for="email" class="sr-only" style="position:absolute;left:-9999px;">Email</label>
+        <input id="email" type="email" name="email" required placeholder="Enter your email to get notified" inputmode="email" />
+        <button type="submit" class="btn btn-primary" id="notifyBtn">
+          Notify Me
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 4v16M5 12h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </form>
+      <div class="note">
+        We’ll only email you once when the new site goes live.
+      </div>
+
+      <!-- Appearance controls -->
+      <div class="controls" aria-label="Appearance controls">
+        <div class="control-tile">
+          <label for="accent">Accent color</label>
+          <input id="accent" type="color" value="#6ee7ff" aria-label="Choose accent color" />
+        </div>
+        <label class="toggle control-tile" title="Automatically cycle accent color">
+          <input id="autoHue" type="checkbox" checked role="switch" aria-checked="true" aria-label="Auto color pulse">
+          Auto color pulse
+        </label>
+      </div>
+
+      <footer>
+        © <span id="year"></span> Developed by 
+        <a href="https://github.com/gazialamin96" style="color: azure;">Gazi Al-Amin</a>
+      </footer>
+    </section>
+  </main>
+
+  <!-- Toast -->
+  <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true">
+    <p class="title" id="toastTitle">Saved</p>
+    <p class="msg" id="toastMsg">We’ll keep you posted.</p>
+  </div>
+
+  <script>
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Accent color controls
+    const root = document.documentElement;
+    const picker = document.getElementById('accent');
+    const autoHue = document.getElementById('autoHue');
+    let rafHue = null;
+    let hue = 190; // starting cyan
+
+    function setAccentFromHex(hex){
+      root.style.setProperty('--accent', hex);
+      const rgba = hexToRgba(hex, 0.25);
+      root.style.setProperty('--accent-soft', rgba);
+      updateToggleKnobColor(hex);
+    }
+    function updateToggleKnobColor(hex){
+      const style = getComputedStyle(root);
+      const soft = style.getPropertyValue('--accent-soft') || 'rgba(110,231,255,0.25)';
+      const sheetId = 'toggle-knob-dyn';
+      let styleTag = document.getElementById(sheetId);
+      if(!styleTag){
+        styleTag = document.createElement('style');
+        styleTag.id = sheetId;
+        document.head.appendChild(styleTag);
+      }
+      styleTag.textContent = `.toggle input::after { background: ${hex}; box-shadow: 0 0 10px ${soft}; }`;
+    }
+    function hexToRgba(hex, alpha){
+      const c = hex.replace('#','');
+      const bigint = parseInt(c, 16);
+      const r = (c.length===3) ? ((bigint>>8)&0xF)*17 : (bigint>>16)&255;
+      const g = (c.length===3) ? ((bigint>>4)&0xF)*17 : (bigint>>8)&255;
+      const b = (c.length===3) ? ((bigint)&0xF)*17 : (bigint)&255;
+      return `rgba(${r},${g},${b},${alpha})`;
+    }
+    picker.addEventListener('input', (e)=> setAccentFromHex(e.target.value));
+
+    // Auto hue
+    function animateHue(){
+      const speed = 0.25;
+      hue = (hue + speed) % 360;
+      const hex = hslToHex(hue, 90, 70);
+      picker.value = hex;
+      setAccentFromHex(hex);
+      rafHue = requestAnimationFrame(animateHue);
+    }
+    autoHue.addEventListener('change', (e)=>{
+      if(e.target.checked){
+        if(!rafHue) rafHue = requestAnimationFrame(animateHue);
+      } else {
+        if(rafHue){ cancelAnimationFrame(rafHue); rafHue = null; }
+      }
+    });
+    function hslToHex(h, s, l){
+      s/=100; l/=100;
+      const k = n => (n + h/30) % 12;
+      const a = s * Math.min(l, 1 - l);
+      const f = n => l - a * Math.max(-1, Math.min(k(n)-3, Math.min(9-k(n),1)));
+      const toHex = x => Math.round(x*255).toString(16).padStart(2,'0');
+      return `#${toHex(f(0))}${toHex(f(8))}${toHex(f(4))}`;
+    }
+
+    // Particles
+    const canvas = document.getElementById('particles');
+    const ctx = canvas.getContext('2d', { alpha: true });
+    let w, h, particles = [];
+    function resize(){
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+      initParticles();
+    }
+    window.addEventListener('resize', resize);
+    function initParticles(){
+      const density = Math.min(100, Math.floor((w*h)/48000));
+      particles = Array.from({length: density}).map(()=>({
+        x: Math.random()*w,
+        y: Math.random()*h,
+        r: Math.random()*1.6 + 0.4,
+        vx: (Math.random()-0.5)*0.3,
+        vy: (Math.random()-0.5)*0.3,
+        a: Math.random()*0.6 + 0.3
+      }));
+    }
+    function draw(){
+      ctx.clearRect(0,0,w,h);
+      const accent = getComputedStyle(root).getPropertyValue('--accent').trim() || '#6ee7ff';
+      particles.forEach(p=>{
+        p.x += p.vx; p.y += p.vy;
+        if(p.x < 0) p.x = w; if(p.x > w) p.x = 0;
+        if(p.y < 0) p.y = h; if(p.y > h) p.y = 0;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+        ctx.fillStyle = hexToRgba(accent, p.a);
+        ctx.shadowColor = hexToRgba(accent, Math.min(p.a+0.1, 0.8));
+        ctx.shadowBlur = 8;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      });
+      requestAnimationFrame(draw);
+    }
+
+    // Countdown
+    const card = document.getElementById('launchCard');
+    const tDays = document.getElementById('days');
+    const tHours = document.getElementById('hours');
+    const tMins = document.getElementById('mins');
+    const tSecs = document.getElementById('secs');
+
+    function getLaunchDate(){
+      const attr = card.getAttribute('data-launch')?.trim();
+      if(attr){
+        const d = new Date(attr);
+        if(!isNaN(d)) return d;
+      }
+      // Default: 365 days from now, 10:00 local
+      const now = new Date();
+      const d = new Date(now.getFullYear(), now.getMonth(), now.getDate()+365, 10, 0, 0);
+      return d;
+    }
+    const launchAt = getLaunchDate();
+
+    function updateCountdown(){
+      const now = new Date();
+      let diff = launchAt - now;
+      if(diff < 0) diff = 0;
+      const s = Math.floor(diff / 1000);
+      const days = Math.floor(s / 86400);
+      const hours = Math.floor((s % 86400) / 3600);
+      const mins = Math.floor((s % 3600) / 60);
+      const secs = s % 60;
+      tDays.textContent = String(days).padStart(2,'0');
+      tHours.textContent = String(hours).padStart(2,'0');
+      tMins.textContent = String(mins).padStart(2,'0');
+      tSecs.textContent = String(secs).padStart(2,'0');
+    }
+
+    // Notify form (POST to endpoint if available, else mailto fallback)
+    const form = document.getElementById('notifyForm');
+    const emailInput = document.getElementById('email');
+    const btn = document.getElementById('notifyBtn');
+
+    // Configure endpoint here (leave empty to use mailto fallback)
+    const NOTIFY_ENDPOINT = ""; // e.g., "/api/notify" or full URL like "https://api.yoursite.com/notify"
+    const MAILTO = "gazialamin96@gmail.com";
+
+    function showToast(title, msg, type='ok'){
+      const toast = document.getElementById('toast');
+      const tTitle = document.getElementById('toastTitle');
+      const tMsg = document.getElementById('toastMsg');
+      toast.classList.remove('error','warn');
+      if(type==='error') toast.classList.add('error');
+      if(type==='warn') toast.classList.add('warn');
+      tTitle.textContent = title;
+      tMsg.textContent = msg;
+      toast.style.display = 'block';
+      clearTimeout(showToast._t);
+      showToast._t = setTimeout(()=> toast.style.display='none', 4200);
+    }
+
+    form.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const email = emailInput.value.trim();
+      if(!email){
+        showToast('Email required', 'Please enter a valid email address.', 'warn');
+        emailInput.focus();
+        return;
+      }
+      btn.disabled = true;
+      btn.style.opacity = .7;
+
+      try {
+        if(NOTIFY_ENDPOINT){
+          // Backend mode
+          const res = await fetch(NOTIFY_ENDPOINT, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, source: 'under-dev', ts: new Date().toISOString() })
+          });
+          if(!res.ok) throw new Error('Request failed');
+          showToast('Thanks!', 'We’ll notify you when we launch.');
+          form.reset();
+        } else {
+          // Mailto fallback (static, opens client)
+          const subj = encodeURIComponent('Notify me when Website is launches');
+          const body = encodeURIComponent(`Please notify me at ${email} when the new site goes live.\n\n— Submitted from website under-development page`);
+          window.location.href = `mailto:${MAILTO}?subject=${subj}&body=${body}`;
+          showToast('Opening mail app…', 'If it didn’t open, you can email us directly.', 'warn');
+        }
+      } catch (err){
+        console.error(err);
+        showToast('Something went wrong', 'Please try again in a moment.', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.style.opacity = 1;
+      }
+    });
+
+    // Init
+    resize();
+    setAccentFromHex(picker.value);
+    // Auto color pulse ON by default
+    autoHue.checked = true;
+    rafHue = requestAnimationFrame(animateHue);
+
+    requestAnimationFrame(draw);
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
+</body>
+</html>
