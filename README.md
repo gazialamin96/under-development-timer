@@ -32,5 +32,5 @@ Designed and implemented by **Gazi Al-Amin (Sr. System Engineer)**.
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/<gazialamin96>/under-development-timer.git
-cd <repo-name>
+git clone https://github.com/gazialamin96/under-development-timer.git
+cd under-development-timer
